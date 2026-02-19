@@ -1,0 +1,6 @@
+#!/root/.openclaw/workspace/Ai-replay/.venv_cli_e2e/bin/python3
+import sys
+from replaypack.cli import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())

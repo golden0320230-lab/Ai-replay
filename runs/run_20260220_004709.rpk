@@ -1,0 +1,99 @@
+{
+  "_header": {
+    "checksum": "ef27f7edcef5b7ab3ceff7b39f2b856607411440260f2be168eb6e19ecd578c1",
+    "created_at": "2026-02-19T16:47:09.172371+00:00",
+    "generator": "replaypack/0.1.0",
+    "schema_version": "1.0.0"
+  },
+  "_metadata": {
+    "compression": null,
+    "recording_count": 1,
+    "step_count": 3,
+    "total_size_bytes": 0
+  },
+  "_schema_version": "1.0.0",
+  "recording": {
+    "metadata": {
+      "duration_ns": 1032093123,
+      "step_count": 3
+    },
+    "steps": [
+      {
+        "args": [
+          "machine learning"
+        ],
+        "exception": null,
+        "function": "tool.search_database",
+        "hash": "61f615173ff960ca46f0e405c30f6806",
+        "id": "487a84bc-19d1-4a23-b5ee-c6791b52ed61",
+        "kwargs": {},
+        "result": {
+          "count": 2,
+          "results": [
+            {
+              "id": 1,
+              "title": "Result for machine learning"
+            },
+            {
+              "id": 2,
+              "title": "Another result for machine learning"
+            }
+          ]
+        },
+        "sequence": 1
+      },
+      {
+        "args": [
+          {
+            "count": 2,
+            "results": [
+              {
+                "id": 1,
+                "title": "Result for machine learning"
+              },
+              {
+                "id": 2,
+                "title": "Another result for machine learning"
+              }
+            ]
+          }
+        ],
+        "exception": null,
+        "function": "tool.format_output",
+        "hash": "11a0fc96db3b4df0e7cb3b805dbbcdf6",
+        "id": "f58824a8-f7e3-4fa4-9c2f-90f47078ec16",
+        "kwargs": {},
+        "result": "- Result for machine learning\n- Another result for machine learning",
+        "sequence": 2
+      },
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "44ad392b74df043957bcdd69ee80e766",
+        "id": "36796609-bc26-4b51-854a-66beabb02b3b",
+        "kwargs": {
+          "body": null,
+          "headers": {},
+          "method": "get",
+          "url": "https://httpbin.org/get"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-69973e8d-4581933818d83a62349e39a5\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/get\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "306",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 16:47:09 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 3
+      }
+    ],
+    "version": "1.0.0"
+  }
+}

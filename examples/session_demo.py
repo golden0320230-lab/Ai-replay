@@ -51,10 +51,16 @@ def main():
     # Step 4: HTTP API call (example)
     print("[Step 4] Fetching additional data...")
     try:
-        # This would be a real API call in production
-        # For demo, we'll just simulate
+        # Make an actual HTTP request to httpbin.org
+        response = requests.get('https://httpbin.org/get', timeout=10)
+        print(f"  HTTP status: {response.status_code}")
+        data = response.json()
+        print(f"  Origin: {data.get('origin', 'unknown')}")
+    except Exception as e:
+        print(f"  HTTP error: {e}")
+        # Fallback to simulated response if network fails
         response = {"status": "ok", "data": "example"}
-        print(f"  HTTP response: {response['status']}")
+        print(f"  Using fallback: {response['status']}")
     except Exception as e:
         print(f"  HTTP error: {e}")
     
