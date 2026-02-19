@@ -285,8 +285,8 @@ def cmd_diff(args) -> int:
         
         if divergence.step_a and divergence.step_b:
             print(f"  Function: {divergence.step_a.function}")
-            print(f"  Hash A: {divergence.hash_a[:16] if divergence.hash_a else 'N/A'}...")
-            print(f"  Hash B: {divergence.hash_b[:16] if divergence.hash_b else 'N/A'}...")
+            print(f"  Hash A: {divergence.hash_a if divergence.hash_a else 'N/A'}")
+            print(f"  Hash B: {divergence.hash_b if divergence.hash_b else 'N/A'}")
         
         # Show git-style diff for the divergent step
         if divergence.step_a and divergence.step_b:
