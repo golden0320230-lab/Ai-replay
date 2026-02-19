@@ -1,7 +1,7 @@
 {
   "_header": {
-    "checksum": "e977648f42cc4862f118d0f5835322a374df44dfa10d24a238ac50a443e60e86",
-    "created_at": "2026-02-19T09:23:34.642422+00:00",
+    "checksum": "fe23bc6cfb644202d50b09ca086ce2a51549deb703d72b38799bd4491a17cf24",
+    "created_at": "2026-02-19T09:26:26.506083+00:00",
     "generator": "replaypack/0.1.0",
     "schema_version": "1.0.0"
   },
@@ -14,7 +14,7 @@
   "_schema_version": "1.0.0",
   "recording": {
     "metadata": {
-      "duration_ns": 55880975,
+      "duration_ns": 56467680,
       "step_count": 2
     },
     "steps": [
@@ -25,7 +25,7 @@
         "exception": null,
         "function": "tool.search_database",
         "hash": "61f615173ff960ca46f0e405c30f6806",
-        "id": "e5723e2c-544b-4419-a4ef-975d15febd2d",
+        "id": "e77baf56-7dec-4c34-b230-a8a69cfb9cb0",
         "kwargs": {},
         "result": {
           "count": 2,
@@ -61,7 +61,7 @@
         "exception": null,
         "function": "tool.format_output",
         "hash": "11a0fc96db3b4df0e7cb3b805dbbcdf6",
-        "id": "e1154e7d-943b-430c-8ede-9b579c4041d2",
+        "id": "d97971b4-daeb-46d8-b5ac-d07205c7102a",
         "kwargs": {},
         "result": "- Result for machine learning\n- Another result for machine learning",
         "sequence": 2

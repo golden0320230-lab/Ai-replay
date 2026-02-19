@@ -134,23 +134,30 @@ def cmd_record(args) -> int:
 
 
 def cmd_replay(args) -> int:
-    """Replay command."""
-    artifact = Artifact.load(args.artifact)
-    replayer = Replayer()
-    replayer.load(artifact.recording)
+    """Replay command with stub support."""
+    from .replay_harness import ReplayHarness
+    
+    artifact_path = Path(args.artifact)
+    harness = ReplayHarness(artifact_path)
     
     print(f"Replaying {args.artifact}...")
-    result = replayer.replay()
+    result = harness.replayer.replay()
     
     if args.verify:
         print("Verifying determinism...")
-        if replayer.verify_determinism():
+        if harness.replayer.verify_determinism():
             print("✓ Determinism verified (100 runs)")
         else:
             print("✗ Determinism check failed")
             return 1
     
     print(f"Steps executed: {result.steps_executed}")
+    
+    # Show stub availability
+    stubs = list(harness.replayer._stubs.keys())
+    if stubs:
+        print(f"Stubs available: {', '.join(stubs)}")
+    
     return 0
 
 
