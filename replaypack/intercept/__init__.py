@@ -1,25 +1,46 @@
 """Interception module for capturing LLM and HTTP calls."""
 
 from .base import CaptureEntry, InterceptorBase, CompositeInterceptor
+from .llm.openai import OpenAIInterceptor, OpenAICall
+from .llm.anthropic import AnthropicInterceptor, AnthropicCall
+from .llm.gemini import GeminiInterceptor, GeminiCall
+from .http.requests import RequestsInterceptor, HTTPCall
 
 __all__ = [
     'CaptureEntry',
     'InterceptorBase',
     'CompositeInterceptor',
+    'OpenAIInterceptor',
+    'OpenAICall',
+    'AnthropicInterceptor',
+    'AnthropicCall',
+    'GeminiInterceptor',
+    'GeminiCall',
+    'RequestsInterceptor',
+    'HTTPCall',
 ]
 
 
 def create_default_interceptor() -> CompositeInterceptor:
     """Create interceptor with all available adapters."""
-    from .llm.openai import OpenAIInterceptor
-    from .http.requests import RequestsInterceptor
-    
     composite = CompositeInterceptor()
     
     # Add LLM interceptors
     try:
         import openai  # noqa: F401
         composite.add(OpenAIInterceptor())
+    except ImportError:
+        pass
+    
+    try:
+        import anthropic  # noqa: F401
+        composite.add(AnthropicInterceptor())
+    except ImportError:
+        pass
+    
+    try:
+        import google.generativeai  # noqa: F401
+        composite.add(GeminiInterceptor())
     except ImportError:
         pass
     
