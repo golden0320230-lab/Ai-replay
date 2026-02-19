@@ -83,4 +83,4 @@ if __name__ == "__main__":
         main()
     
     print(f"\nRun recorded to {output_dir}/")
-    print(f"Replay with: replaypack replay {output_dir}/*.rpk")
+    print(f"Replay with: replaypack replay --latest {output_dir}")

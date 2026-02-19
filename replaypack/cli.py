@@ -43,6 +43,7 @@ def create_parser() -> argparse.ArgumentParser:
     replay_parser.add_argument('--run-recorded-command', action='store_true', 
                                help='Re-run the original recorded command (if stored)')
     replay_parser.add_argument('--verify', action='store_true', help='Verify determinism')
+    replay_parser.add_argument('--save-trace', action='store_true', help='Save replay trace to runs/')
     replay_parser.add_argument('replay_args', nargs='*', help='Command to replay with stubs (e.g., -- python script.py)')
     
     # diff command
@@ -187,10 +188,8 @@ def cmd_record(args) -> int:
         for f in rpk_files[-5:]:  # Show last 5
             print(f"  - {f.name}")
         
-        # Print helpful next steps
-        latest = rpk_files[-1]
+        # Print helpful next steps - never show globs
         print(f"\nNext steps:")
-        print(f"  replaypack replay {latest}")
         print(f"  replaypack replay --latest {output_dir}")
     else:
         print(f"\nWarning: No .rpk files found in {output_dir}")
@@ -262,6 +261,7 @@ def cmd_replay(args) -> int:
 def cmd_diff(args) -> int:
     """Diff command with git-style output."""
     from .diff_engine import DiffEngine
+    from .core.step import Step
     
     artifact_a = Artifact.load(args.artifact_a)
     artifact_b = Artifact.load(args.artifact_b)
@@ -294,14 +294,41 @@ def cmd_diff(args) -> int:
             print("GIT-STYLE DIFF")
             print("=" * 60)
             
+            # Get results, applying volatility normalization in non-strict mode
+            result_a = divergence.step_a.result
+            result_b = divergence.step_b.result
+            
+            if not args.strict and divergence.step_a.function == 'http.request':
+                # Apply same normalization used for hashing
+                step_a = Step(
+                    id=divergence.step_a.id,
+                    sequence=divergence.step_a.sequence,
+                    function=divergence.step_a.function,
+                    args=divergence.step_a.args,
+                    kwargs=divergence.step_a.kwargs,
+                    result=result_a,
+                    exception=divergence.step_a.exception
+                )
+                step_b = Step(
+                    id=divergence.step_b.id,
+                    sequence=divergence.step_b.sequence,
+                    function=divergence.step_b.function,
+                    args=divergence.step_b.args,
+                    kwargs=divergence.step_b.kwargs,
+                    result=result_b,
+                    exception=divergence.step_b.exception
+                )
+                result_a = step_a._normalize_http_response(result_a)
+                result_b = step_b._normalize_http_response(result_b)
+            
             # Convert results to JSON strings for diffing
             import json
-            result_a = json.dumps(divergence.step_a.result, indent=2, sort_keys=True) if divergence.step_a.result else ""
-            result_b = json.dumps(divergence.step_b.result, indent=2, sort_keys=True) if divergence.step_b.result else ""
+            result_a_str = json.dumps(result_a, indent=2, sort_keys=True) if result_a else ""
+            result_b_str = json.dumps(result_b, indent=2, sort_keys=True) if result_b else ""
             
             # Use DiffEngine for proper hunks
             engine = DiffEngine()
-            hunks = engine.line_diff(result_a, result_b)
+            hunks = engine.line_diff(result_a_str, result_b_str)
             
             for hunk in hunks:
                 print(f"\n@@ -{hunk.old_start},{hunk.old_count} +{hunk.new_start},{hunk.new_count} @@")

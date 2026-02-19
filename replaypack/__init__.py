@@ -104,11 +104,12 @@ def stop() -> Path:
 
 
 @contextmanager
-def record(output_dir: Optional[str] = None):
+def record(output_dir: Optional[str] = None, silent: bool = False):
     """Context manager for recording a run.
     
     Args:
         output_dir: Directory to save .rpk files.
+        silent: If True, don't print save message.
         
     Example:
         with replaypack.record() as rec:
@@ -130,7 +131,8 @@ def record(output_dir: Optional[str] = None):
             yield
         finally:
             path = stop()
-            print(f"Replay saved to: {path}")
+            if not silent:
+                print(f"Replay trace saved to: {path}")
 
 
 def tool(name: Optional[str] = None) -> Callable[[F], F]:
