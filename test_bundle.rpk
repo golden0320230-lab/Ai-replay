@@ -1,0 +1,308 @@
+{
+  "_schema_version": "1.0.0",
+  "_type": "bundle",
+  "artifacts": [
+    {
+      "_header": {
+        "checksum": "a3903719caa3991dbdf1586383477b9fa9a711e19e14bf2f2b7b70ffc5c3ac16",
+        "created_at": "2026-02-19T08:34:46.258937+00:00",
+        "generator": "replaypack/0.1.0",
+        "schema_version": "1.0.0"
+      },
+      "_metadata": {
+        "compression": null,
+        "recording_count": 1,
+        "step_count": 5,
+        "total_size_bytes": 0
+      },
+      "_schema_version": "1.0.0",
+      "recording": {
+        "metadata": {
+          "duration_ns": 3487420151,
+          "step_count": 5
+        },
+        "steps": [
+          {
+            "args": [],
+            "exception": null,
+            "function": "http.request",
+            "hash": "19557da846c7ef8094973fba2ce83e10",
+            "id": "c638bd80-03d6-49cf-abbf-1ec9a0e61164",
+            "kwargs": {
+              "body": "{\"prompt\": \"What is machine learning?\", \"model\": \"test-model\"}",
+              "headers": {},
+              "method": "post",
+              "url": "https://httpbin.org/post"
+            },
+            "result": {
+              "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"What is machine learning?\\\", \\\"model\\\": \\\"test-model\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"62\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb23-331ad25647daaeb010fd3bac\"\n  }, \n  \"json\": {\n    \"model\": \"test-model\", \n    \"prompt\": \"What is machine learning?\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+              "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Connection": "keep-alive",
+                "Content-Length": "581",
+                "Content-Type": "application/json",
+                "Date": "Thu, 19 Feb 2026 08:34:43 GMT",
+                "Server": "gunicorn/19.9.0"
+              },
+              "status": 200
+            },
+            "sequence": 1
+          },
+          {
+            "args": [
+              "machine learning"
+            ],
+            "exception": null,
+            "function": "tool.search_knowledge_base",
+            "hash": "341a4bab1eddb50ba5b0c61081dacddb",
+            "id": "ad75ee99-d3dc-4efd-9578-9f67bdc54707",
+            "kwargs": {},
+            "result": [
+              {
+                "id": 1,
+                "title": "Article about machine learning"
+              },
+              {
+                "id": 2,
+                "title": "Guide to machine learning"
+              }
+            ],
+            "sequence": 2
+          },
+          {
+            "args": [],
+            "exception": null,
+            "function": "http.request",
+            "hash": "c24479ba12e8d1b4aac4579cdc41d0e7",
+            "id": "72b12d9a-07b5-4bc3-bb1f-735f0298e7eb",
+            "kwargs": {
+              "body": "{\"prompt\": \"Explain neural networks\", \"model\": \"test-model\"}",
+              "headers": {},
+              "method": "post",
+              "url": "https://httpbin.org/post"
+            },
+            "result": {
+              "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"Explain neural networks\\\", \\\"model\\\": \\\"test-model\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"60\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb24-2338ac2132455df31e3dd426\"\n  }, \n  \"json\": {\n    \"model\": \"test-model\", \n    \"prompt\": \"Explain neural networks\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+              "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Connection": "keep-alive",
+                "Content-Length": "577",
+                "Content-Type": "application/json",
+                "Date": "Thu, 19 Feb 2026 08:34:45 GMT",
+                "Server": "gunicorn/19.9.0"
+              },
+              "status": 200
+            },
+            "sequence": 3
+          },
+          {
+            "args": [
+              [
+                {
+                  "price": 10
+                },
+                {
+                  "price": 25
+                },
+                {
+                  "price": 15
+                }
+              ]
+            ],
+            "exception": null,
+            "function": "tool.calculate_price",
+            "hash": "54873c5efdfdad32b09e73740f63a4d9",
+            "id": "5525c076-f85d-458a-bcfb-93fae5a618aa",
+            "kwargs": {},
+            "result": {
+              "count": 3,
+              "total": 50
+            },
+            "sequence": 4
+          },
+          {
+            "args": [],
+            "exception": null,
+            "function": "http.request",
+            "hash": "39f430715d86fcce0c4974968df3b71d",
+            "id": "159fd69c-a2cf-4db5-85d8-8bc8314e9e47",
+            "kwargs": {
+              "body": "{\"prompt\": \"Summary of findings\", \"model\": \"test-model\"}",
+              "headers": {},
+              "method": "post",
+              "url": "https://httpbin.org/post"
+            },
+            "result": {
+              "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"Summary of findings\\\", \\\"model\\\": \\\"test-model\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"56\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb26-66aef1805532776e5a141065\"\n  }, \n  \"json\": {\n    \"model\": \"test-model\", \n    \"prompt\": \"Summary of findings\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+              "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Connection": "keep-alive",
+                "Content-Length": "569",
+                "Content-Type": "application/json",
+                "Date": "Thu, 19 Feb 2026 08:34:46 GMT",
+                "Server": "gunicorn/19.9.0"
+              },
+              "status": 200
+            },
+            "sequence": 5
+          }
+        ],
+        "version": "1.0.0"
+      }
+    },
+    {
+      "_header": {
+        "checksum": "9e1d2449042ca60a699f509f7f728f7523f7337dc75040184b14869a272bed6a",
+        "created_at": "2026-02-19T08:35:57.897401+00:00",
+        "generator": "replaypack/0.1.0",
+        "schema_version": "1.0.0"
+      },
+      "_metadata": {
+        "compression": null,
+        "recording_count": 1,
+        "step_count": 5,
+        "total_size_bytes": 0
+      },
+      "_schema_version": "1.0.0",
+      "recording": {
+        "metadata": {
+          "duration_ns": 3708192187,
+          "step_count": 5
+        },
+        "steps": [
+          {
+            "args": [],
+            "exception": null,
+            "function": "http.request",
+            "hash": "6ece7fea7f77221d46020d584bd86057",
+            "id": "db128d0d-8709-4523-ad22-62a248d9ad66",
+            "kwargs": {
+              "body": "{\"prompt\": \"test\"}",
+              "headers": {},
+              "method": "post",
+              "url": "https://httpbin.org/post"
+            },
+            "result": {
+              "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"test\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"18\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb6b-386fc66762619b164338d741\"\n  }, \n  \"json\": {\n    \"prompt\": \"test\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+              "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Connection": "keep-alive",
+                "Content-Length": "484",
+                "Content-Type": "application/json",
+                "Date": "Thu, 19 Feb 2026 08:35:55 GMT",
+                "Server": "gunicorn/19.9.0"
+              },
+              "status": 200
+            },
+            "sequence": 1
+          },
+          {
+            "args": [
+              "machine learning"
+            ],
+            "exception": null,
+            "function": "tool.search_knowledge_base",
+            "hash": "9d1ea678ab5e4c577e596ca1ea076397",
+            "id": "d6df7458-3a58-43b3-8fc0-e5615473c1ab",
+            "kwargs": {},
+            "result": [
+              {
+                "id": 99,
+                "title": "CHANGED Article about machine learning"
+              },
+              {
+                "id": 2,
+                "title": "Guide to machine learning"
+              }
+            ],
+            "sequence": 2
+          },
+          {
+            "args": [],
+            "exception": null,
+            "function": "http.request",
+            "hash": "e926caa7d0768d611cf4cdd5d44b1d33",
+            "id": "7b58df79-3aed-4be3-85fa-0d1eb58501b2",
+            "kwargs": {
+              "body": "{\"prompt\": \"test2\"}",
+              "headers": {},
+              "method": "post",
+              "url": "https://httpbin.org/post"
+            },
+            "result": {
+              "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"test2\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"19\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb6c-78ad0c494d18ce89063acdb2\"\n  }, \n  \"json\": {\n    \"prompt\": \"test2\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+              "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Connection": "keep-alive",
+                "Content-Length": "486",
+                "Content-Type": "application/json",
+                "Date": "Thu, 19 Feb 2026 08:35:56 GMT",
+                "Server": "gunicorn/19.9.0"
+              },
+              "status": 200
+            },
+            "sequence": 3
+          },
+          {
+            "args": [
+              [
+                {
+                  "price": 10
+                },
+                {
+                  "price": 25
+                },
+                {
+                  "price": 15
+                }
+              ]
+            ],
+            "exception": null,
+            "function": "tool.calculate_price",
+            "hash": "54873c5efdfdad32b09e73740f63a4d9",
+            "id": "df0a6a2c-9a86-4b72-a875-44a8fd14567e",
+            "kwargs": {},
+            "result": {
+              "count": 3,
+              "total": 50
+            },
+            "sequence": 4
+          },
+          {
+            "args": [],
+            "exception": null,
+            "function": "http.request",
+            "hash": "d7bf60d6a6d0adc8a4577786c26bdc6a",
+            "id": "d94a7def-5cdf-4924-abe9-3cfb58c6a912",
+            "kwargs": {
+              "body": "{\"prompt\": \"test3\"}",
+              "headers": {},
+              "method": "post",
+              "url": "https://httpbin.org/post"
+            },
+            "result": {
+              "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"test3\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"19\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb6c-54e714251f9a229e3344981f\"\n  }, \n  \"json\": {\n    \"prompt\": \"test3\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+              "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Connection": "keep-alive",
+                "Content-Length": "486",
+                "Content-Type": "application/json",
+                "Date": "Thu, 19 Feb 2026 08:35:57 GMT",
+                "Server": "gunicorn/19.9.0"
+              },
+              "status": 200
+            },
+            "sequence": 5
+          }
+        ],
+        "version": "1.0.0"
+      }
+    }
+  ]
+}
