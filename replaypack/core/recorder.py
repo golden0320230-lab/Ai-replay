@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
+import os
 import time
 import uuid
 from typing import Any, Optional, List
 
 from .step import Step
 from ..intercept.base import CaptureEntry, CaptureBackend
+
+
+# Session limits from environment
+MAX_STEPS = int(os.environ.get('REPLAYPACK_MAX_STEPS', '10000'))
+MAX_MB = int(os.environ.get('REPLAYPACK_MAX_MB', '50'))
+MAX_BYTES = MAX_MB * 1024 * 1024
 
 
 class RecordingSession(CaptureBackend):
@@ -23,6 +30,36 @@ class RecordingSession(CaptureBackend):
         self._sequence = 0
         self._start_ns = time.perf_counter_ns()
         self._lock = False  # Simple lock for thread safety
+        self._truncated = False
+        self._error_event = None
+    
+    def _check_limits(self) -> bool:
+        """Check if recording limits exceeded.
+        
+        Returns:
+            True if ok to continue, False if limits exceeded.
+        """
+        if self._truncated:
+            return False
+        
+        # Check step count
+        if len(self.steps) >= MAX_STEPS:
+            self._truncated = True
+            self._error_event = f"Session truncated: exceeded {MAX_STEPS} steps"
+            return False
+        
+        # Check size (approximate)
+        import sys
+        try:
+            total_size = sum(sys.getsizeof(s) for s in self.steps)
+            if total_size >= MAX_BYTES:
+                self._truncated = True
+                self._error_event = f"Session truncated: exceeded {MAX_MB}MB"
+                return False
+        except:
+            pass  # Size check is best-effort
+        
+        return True
     
     def record(
         self,
@@ -31,7 +68,7 @@ class RecordingSession(CaptureBackend):
         kwargs: dict,
         result: Any = None,
         exception: Optional[Exception] = None
-    ) -> Step:
+    ) -> Optional[Step]:
         """Record a single execution step.
         
         Args:
@@ -42,8 +79,12 @@ class RecordingSession(CaptureBackend):
             exception: Exception that was raised (if any).
             
         Returns:
-            The recorded Step.
+            The recorded Step, or None if limits exceeded.
         """
+        # Check limits before recording
+        if not self._check_limits():
+            return None
+        
         # Simple spinlock for thread safety
         while self._lock:
             pass
@@ -82,12 +123,17 @@ class RecordingSession(CaptureBackend):
             Recording artifact containing all captured steps.
         """
         from .storage import Recording
+        metadata = {
+            'duration_ns': time.perf_counter_ns() - self._start_ns,
+            'step_count': len(self.steps),
+        }
+        if self._truncated:
+            metadata['truncated'] = True
+            metadata['error'] = self._error_event
+        
         return Recording(
             steps=self.steps,
-            metadata={
-                'duration_ns': time.perf_counter_ns() - self._start_ns,
-                'step_count': len(self.steps),
-            },
+            metadata=metadata,
             version='1.0.0'
         )
     

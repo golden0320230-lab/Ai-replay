@@ -155,24 +155,30 @@ def search_database(query: str):
 ## CLI usage
 
 ```bash
-# Record
+# Record (plug-and-play, no code changes needed)
 replaypack record -- python app.py
 
-# Replay
+# Replay offline
 replaypack replay run.rpk
 
-# Diff
-replaypack diff run1.rpk run2.rpk
+# Diff with first divergence
+replaypack diff run1.rpk run2.rpk --first-divergence
 
-# Assert (CI)
+# Assert (CI - non-zero exit on divergence)
 replaypack assert baseline.rpk current.rpk
 
 # Bundle with redaction
 replaypack bundle run.rpk --redact default --out repro.rpk
 
-# Launch UI
-replaypack ui
+# Launch local UI
+replaypack ui --host 127.0.0.1 --port 8080
 ```
+
+### Environment variables
+
+- `REPLAYPACK_OUTPUT_DIR` - Default output directory (default: `./runs`)
+- `REPLAYPACK_MAX_STEPS` - Maximum steps per session (default: 10000)
+- `REPLAYPACK_MAX_MB` - Maximum artifact size in MB (default: 50)
 
 ---
 
