@@ -65,7 +65,7 @@ with replaypack.record():
 
 Or use the CLI:
 ```bash
-replaypack record -- python app.py
+replaypack record app.py
 ```
 
 ### 2) Replay offline (stubbed)
