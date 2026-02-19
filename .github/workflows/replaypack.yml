@@ -1,0 +1,34 @@
+name: ReplayPack Behavior Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  behavior-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install ReplayPack
+        run: pip install replaypack
+      
+      - name: Record baseline run
+        run: |
+          replaypack record -- python examples/demo.py || true
+      
+      - name: Check against baseline
+        run: |
+          if [ -f "baseline.rpk" ]; then
+            replaypack assert baseline.rpk runs/*.rpk
+          else
+            echo "No baseline found, skipping comparison"
+          fi
