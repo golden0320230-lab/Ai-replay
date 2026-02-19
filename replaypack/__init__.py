@@ -42,7 +42,7 @@ def init(
     # Create output directory
     if output_dir:
         Path(output_dir).mkdir(parents=True, exist_ok=True)
-        os.environ['REPLAYPACK_OUTPUT_DIR'] = output_dir
+        os.environ['REPLAYPACK_OUTPUT_DIR'] = str(output_dir)
     
     # Start recording first (creates session)
     session = Recorder.start()
