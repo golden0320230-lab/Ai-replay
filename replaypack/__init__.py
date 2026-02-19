@@ -44,13 +44,16 @@ def init(
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         os.environ['REPLAYPACK_OUTPUT_DIR'] = output_dir
     
-    # Install interceptors
+    # Start recording first (creates session)
+    session = Recorder.start()
+    
+    # Install interceptors with session as backend
     _interceptor = create_default_interceptor()
     if _interceptor:
+        _interceptor.set_backend(session)
         _interceptor.install()
     
-    # Start recording
-    Recorder.start()
+    return session
 
 
 def stop() -> Path:

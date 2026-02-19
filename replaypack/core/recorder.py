@@ -4,16 +4,18 @@ from __future__ import annotations
 
 import time
 import uuid
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 from .step import Step
+from ..intercept.base import CaptureEntry, CaptureBackend
 
 
-class RecordingSession:
+class RecordingSession(CaptureBackend):
     """Active recording session.
     
     Manages the capture of execution steps during a recording.
     Thread-safe for concurrent step recording.
+    Implements CaptureBackend for interceptor integration.
     """
     
     def __init__(self):
@@ -88,6 +90,32 @@ class RecordingSession:
             },
             version='1.0.0'
         )
+    
+    # CaptureBackend protocol implementation
+    def store(self, entry: CaptureEntry) -> None:
+        """Store a capture entry from interceptors."""
+        # Convert CaptureEntry to Step
+        if hasattr(entry, 'to_dict'):
+            data = entry.to_dict()
+            self.record(
+                function=data.get('type', 'unknown'),
+                args=(),
+                kwargs={
+                    'method': data.get('method'),
+                    'url': data.get('url'),
+                    'headers': data.get('headers'),
+                    'body': data.get('body'),
+                },
+                result={
+                    'status': data.get('response_status'),
+                    'headers': data.get('response_headers'),
+                    'body': data.get('response_body'),
+                }
+            )
+    
+    def get_all(self) -> List[CaptureEntry]:
+        """Get all captured entries."""
+        return []  # Not used for now
 
 
 class Recorder:
