@@ -8,8 +8,11 @@ This test simulates a real-world AI workflow and validates:
 5. Bundle exports safely
 """
 
-import tempfile
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+import tempfile
 import replaypack
 from replaypack.artifact import Artifact, ArtifactBundle
 from replaypack.divergence.detector import DivergenceDetector
