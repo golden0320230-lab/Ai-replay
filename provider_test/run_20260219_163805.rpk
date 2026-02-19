@@ -1,0 +1,105 @@
+{
+  "_header": {
+    "checksum": "484331805d2321722eb9ec0ef8d06b742ed3304e2155306d8bf7d569a0c721d5",
+    "created_at": "2026-02-19T08:38:05.447421+00:00",
+    "generator": "replaypack/0.1.0",
+    "schema_version": "1.0.0"
+  },
+  "_metadata": {
+    "compression": null,
+    "recording_count": 1,
+    "step_count": 3,
+    "total_size_bytes": 0
+  },
+  "_schema_version": "1.0.0",
+  "recording": {
+    "metadata": {
+      "duration_ns": 3239003196,
+      "step_count": 3
+    },
+    "steps": [
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "8df99ee5935e7af9f505ee96d405e83f",
+        "id": "4fd34cb6-59a4-462c-9d54-5c6b11d9d4e5",
+        "kwargs": {
+          "body": "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"user\", \"content\": \"Hello\"}], \"temperature\": 0.7}",
+          "headers": {},
+          "method": "post",
+          "url": "https://httpbin.org/post"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"model\\\": \\\"gpt-4\\\", \\\"messages\\\": [{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"Hello\\\"}], \\\"temperature\\\": 0.7}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"90\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cbeb-0dca202c2ac9e9757212fd91\"\n  }, \n  \"json\": {\n    \"messages\": [\n      {\n        \"content\": \"Hello\", \n        \"role\": \"user\"\n      }\n    ], \n    \"model\": \"gpt-4\", \n    \"temperature\": 0.7\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "687",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 08:38:03 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 1
+      },
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "666f8f7f4b677ee2d4674a898643645d",
+        "id": "48e9db78-89e1-4491-9d57-bf88473d3fda",
+        "kwargs": {
+          "body": "{\"model\": \"llama2\", \"prompt\": \"Hello\", \"stream\": false}",
+          "headers": {},
+          "method": "post",
+          "url": "https://httpbin.org/post"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"model\\\": \\\"llama2\\\", \\\"prompt\\\": \\\"Hello\\\", \\\"stream\\\": false}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"55\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cbec-7828ed152f7a3c7b6753e1de\"\n  }, \n  \"json\": {\n    \"model\": \"llama2\", \n    \"prompt\": \"Hello\", \n    \"stream\": false\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "574",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 08:38:04 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 2
+      },
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "4b77cca47096321d290f280e3c97a278",
+        "id": "aea2df25-11b8-4f58-af5d-56abe470574d",
+        "kwargs": {
+          "body": "{\"model\": \"local-model\", \"messages\": [{\"role\": \"user\", \"content\": \"Test\"}], \"max_tokens\": 100}",
+          "headers": {},
+          "method": "post",
+          "url": "https://httpbin.org/post"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"model\\\": \\\"local-model\\\", \\\"messages\\\": [{\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"Test\\\"}], \\\"max_tokens\\\": 100}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"94\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cbed-567612a125b7454164986d54\"\n  }, \n  \"json\": {\n    \"max_tokens\": 100, \n    \"messages\": [\n      {\n        \"content\": \"Test\", \n        \"role\": \"user\"\n      }\n    ], \n    \"model\": \"local-model\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "695",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 08:38:05 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 3
+      }
+    ],
+    "version": "1.0.0"
+  }
+}
