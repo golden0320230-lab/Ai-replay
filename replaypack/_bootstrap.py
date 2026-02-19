@@ -43,10 +43,23 @@ def bootstrap():
                 _atexit_registered = True
     
     elif mode == 'replay':
-        # Replay mode - interceptors will return recorded data
+        # Replay mode - initialize cursor for stubbing
         os.environ['REPLAYPACK_REPLAY'] = '1'
-        sys.stderr.write("[ReplayPack] Replay mode initialized\n")
-        sys.stderr.flush()
+        
+        # Initialize replay cursor
+        artifact_path = os.environ.get('REPLAYPACK_ARTIFACT')
+        if artifact_path:
+            from .replay_stub import ReplayCursor
+            try:
+                cursor = ReplayCursor(Path(artifact_path))
+                sys.stderr.write(f"[ReplayPack] Replay mode initialized ({len(cursor.steps)} steps)\n")
+                sys.stderr.flush()
+            except Exception as e:
+                sys.stderr.write(f"[ReplayPack] Error loading artifact: {e}\n")
+                sys.stderr.flush()
+        else:
+            sys.stderr.write("[ReplayPack] Replay mode: no artifact specified\n")
+            sys.stderr.flush()
 
 
 # Auto-bootstrap when imported

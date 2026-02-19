@@ -163,6 +163,8 @@ def cmd_replay(args) -> int:
 
 def cmd_diff(args) -> int:
     """Diff command with git-style output."""
+    from .diff_engine import DiffEngine
+    
     artifact_a = Artifact.load(args.artifact_a)
     artifact_b = Artifact.load(args.artifact_b)
     
@@ -186,10 +188,24 @@ def cmd_diff(args) -> int:
         
         # Show git-style diff for the divergent step
         if divergence.step_a and divergence.step_b:
-            print("\n--- Step A ---")
-            print(f"{divergence.step_a.result}")
-            print("\n+++ Step B +++")
-            print(f"{divergence.step_b.result}")
+            print("\n" + "=" * 60)
+            print("GIT-STYLE DIFF")
+            print("=" * 60)
+            
+            # Convert results to JSON strings for diffing
+            import json
+            result_a = json.dumps(divergence.step_a.result, indent=2, sort_keys=True) if divergence.step_a.result else ""
+            result_b = json.dumps(divergence.step_b.result, indent=2, sort_keys=True) if divergence.step_b.result else ""
+            
+            # Use DiffEngine for proper hunks
+            engine = DiffEngine()
+            hunks = engine.line_diff(result_a, result_b)
+            
+            for hunk in hunks:
+                print(f"\n@@ -{hunk.old_start},{hunk.old_count} +{hunk.new_start},{hunk.new_count} @@")
+                for line in hunk.lines:
+                    # lines are already formatted with -/+/ prefixes by unified_diff
+                    print(line.rstrip())
         
         return 1
     else:

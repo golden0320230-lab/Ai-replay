@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+import os
 from typing import Any, Callable, Dict, Optional
 from types import ModuleType
 
@@ -58,6 +59,24 @@ class HTTPCall(CaptureEntry):
             return data.hex()[:1000]  # Truncated hex for binary
 
 
+class StubbedResponse:
+    """Mock response object for replay."""
+    
+    def __init__(self, status_code: int, headers: Dict[str, str], content: bytes):
+        self.status_code = status_code
+        self.headers = headers
+        self._content = content
+        self.text = content.decode('utf-8', errors='replace')
+    
+    def json(self) -> Any:
+        import json
+        return json.loads(self.text)
+    
+    @property
+    def content(self) -> bytes:
+        return self._content
+
+
 class RequestsInterceptor(InterceptorBase):
     """Intercepts requests library calls."""
     
@@ -83,10 +102,42 @@ class RequestsInterceptor(InterceptorBase):
             self._requests_module.Session.request = self._original_request
         self._installed = False
     
+    def _is_replay_mode(self) -> bool:
+        """Check if running in replay mode."""
+        return os.environ.get('REPLAYPACK_MODE') == 'replay'
+    
+    def _get_stub_response(self, method: str, url: str) -> Optional[StubbedResponse]:
+        """Get stubbed response from replay cursor."""
+        from ...replay_stub import get_cursor
+        
+        cursor = get_cursor()
+        if cursor is None:
+            return None
+        
+        # Find matching http.request step
+        step = cursor.next_step('http.request')
+        if step is None:
+            return None
+        
+        # Verify this is the right request (optional, could be smarter)
+        result = step.get('result', {})
+        return StubbedResponse(
+            status_code=result.get('status', 200),
+            headers=result.get('headers', {}),
+            content=result.get('body', '').encode('utf-8') if result.get('body') else b''
+        )
+    
     def _wrap_request(self, original: Callable) -> Callable:
         """Wrap Session.request method."""
         
         def wrapped(session, method, url, **kwargs):
+            # Check for replay mode first
+            if self._is_replay_mode():
+                stub = self._get_stub_response(method, url)
+                if stub is not None:
+                    return stub
+                # If no stub found, fall through to live (or could raise error)
+            
             start_ns = time.perf_counter_ns()
             
             # Capture request details

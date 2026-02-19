@@ -1,7 +1,7 @@
 {
   "_header": {
-    "checksum": "ef27f7edcef5b7ab3ceff7b39f2b856607411440260f2be168eb6e19ecd578c1",
-    "created_at": "2026-02-19T16:47:09.172371+00:00",
+    "checksum": "8c8d72100149193a48e47b6eb18571639c9218b0fde9dff0780713aaf5d2d913",
+    "created_at": "2026-02-19T16:52:43.780503+00:00",
     "generator": "replaypack/0.1.0",
     "schema_version": "1.0.0"
   },
@@ -14,7 +14,7 @@
   "_schema_version": "1.0.0",
   "recording": {
     "metadata": {
-      "duration_ns": 1032093123,
+      "duration_ns": 1031457892,
       "step_count": 3
     },
     "steps": [
@@ -25,7 +25,7 @@
         "exception": null,
         "function": "tool.search_database",
         "hash": "61f615173ff960ca46f0e405c30f6806",
-        "id": "487a84bc-19d1-4a23-b5ee-c6791b52ed61",
+        "id": "d863bccf-3483-4d6e-82c0-971c27c2d4ba",
         "kwargs": {},
         "result": {
           "count": 2,
@@ -61,7 +61,7 @@
         "exception": null,
         "function": "tool.format_output",
         "hash": "11a0fc96db3b4df0e7cb3b805dbbcdf6",
-        "id": "f58824a8-f7e3-4fa4-9c2f-90f47078ec16",
+        "id": "0ea02ad1-3392-45cb-be00-08eef7782374",
         "kwargs": {},
         "result": "- Result for machine learning\n- Another result for machine learning",
         "sequence": 2
@@ -70,8 +70,8 @@
         "args": [],
         "exception": null,
         "function": "http.request",
-        "hash": "44ad392b74df043957bcdd69ee80e766",
-        "id": "36796609-bc26-4b51-854a-66beabb02b3b",
+        "hash": "6e7075095a3c370448d93968dcde9601",
+        "id": "2e478978-b65e-407c-80b6-c1840b1f5caa",
         "kwargs": {
           "body": null,
           "headers": {},
@@ -79,14 +79,14 @@
           "url": "https://httpbin.org/get"
         },
         "result": {
-          "body": "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-69973e8d-4581933818d83a62349e39a5\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/get\"\n}\n",
+          "body": "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-69973fdb-3aaf577d781a0d936bcad2e3\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/get\"\n}\n",
           "headers": {
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Origin": "*",
             "Connection": "keep-alive",
             "Content-Length": "306",
             "Content-Type": "application/json",
-            "Date": "Thu, 19 Feb 2026 16:47:09 GMT",
+            "Date": "Thu, 19 Feb 2026 16:52:43 GMT",
             "Server": "gunicorn/19.9.0"
           },
           "status": 200
