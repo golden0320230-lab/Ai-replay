@@ -47,7 +47,33 @@ ReplayPack lets you **reproduce it**, **diff it**, and **gate it in CI**.
 pip install replaypack
 ```
 
-## Quickstart
+## Quick Test (Verify Installation)
+
+```bash
+# Clone or navigate to repo
+cd /path/to/Ai-replay
+
+# Run the E2E test script
+./test_e2e.sh
+```
+
+Or test manually:
+
+```bash
+# Install
+pip install -e .
+pip install requests  # For session demo
+
+# Record
+replaypack record -- python3 examples/session_demo.py
+
+# Replay
+replaypack replay runs/run_*.rpk
+
+# Diff (create two runs first)
+replaypack record -- python3 examples/session_demo.py
+replaypack diff runs/run_a.rpk runs/run_b.rpk --first-divergence
+```
 
 ### 1) Record a run
 
