@@ -19,7 +19,7 @@ jobs:
           python-version: '3.10'
       
       - name: Install ReplayPack
-        run: pip install replaypack
+        run: pip install -e .
       
       - name: Record baseline run
         run: |
