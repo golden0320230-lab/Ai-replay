@@ -30,7 +30,7 @@ def create_parser() -> argparse.ArgumentParser:
     # record command
     record_parser = subparsers.add_parser('record', help='Record a new replay')
     record_parser.add_argument('script', help='Python script to record')
-    record_parser.add_argument('-o', '--output', required=True, help='Output .rpk file')
+    record_parser.add_argument('-o', '--output', default='./runs', help='Output directory (default: ./runs)')
     
     # replay command
     replay_parser = subparsers.add_parser('replay', help='Replay a recording')
@@ -58,9 +58,27 @@ def create_parser() -> argparse.ArgumentParser:
 
 def cmd_record(args) -> int:
     """Record command."""
+    import subprocess
+    import os
+    
+    # Set up environment to enable recording
+    env = os.environ.copy()
+    env['REPLAYPACK_RECORD'] = '1'
+    
+    # Create output directory
+    Path(args.output).mkdir(parents=True, exist_ok=True)
+    env['REPLAYPACK_OUTPUT_DIR'] = args.output
+    
     print(f"Recording {args.script}...")
-    # TODO: Implement recording
-    return 0
+    
+    # Run the script with replaypack imported
+    # For now, just run it directly
+    result = subprocess.run([sys.executable, args.script], env=env)
+    
+    if result.returncode == 0:
+        print(f"Recording complete. Check {args.output}/ for .rpk file")
+    
+    return result.returncode
 
 
 def cmd_replay(args) -> int:
