@@ -1,0 +1,151 @@
+{
+  "_header": {
+    "checksum": "9e1d2449042ca60a699f509f7f728f7523f7337dc75040184b14869a272bed6a",
+    "created_at": "2026-02-19T08:35:57.897401+00:00",
+    "generator": "replaypack/0.1.0",
+    "schema_version": "1.0.0"
+  },
+  "_metadata": {
+    "compression": null,
+    "recording_count": 1,
+    "step_count": 5,
+    "total_size_bytes": 0
+  },
+  "_schema_version": "1.0.0",
+  "recording": {
+    "metadata": {
+      "duration_ns": 3708192187,
+      "step_count": 5
+    },
+    "steps": [
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "6ece7fea7f77221d46020d584bd86057",
+        "id": "db128d0d-8709-4523-ad22-62a248d9ad66",
+        "kwargs": {
+          "body": "{\"prompt\": \"test\"}",
+          "headers": {},
+          "method": "post",
+          "url": "https://httpbin.org/post"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"test\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"18\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb6b-386fc66762619b164338d741\"\n  }, \n  \"json\": {\n    \"prompt\": \"test\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "484",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 08:35:55 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 1
+      },
+      {
+        "args": [
+          "machine learning"
+        ],
+        "exception": null,
+        "function": "tool.search_knowledge_base",
+        "hash": "9d1ea678ab5e4c577e596ca1ea076397",
+        "id": "d6df7458-3a58-43b3-8fc0-e5615473c1ab",
+        "kwargs": {},
+        "result": [
+          {
+            "id": 99,
+            "title": "CHANGED Article about machine learning"
+          },
+          {
+            "id": 2,
+            "title": "Guide to machine learning"
+          }
+        ],
+        "sequence": 2
+      },
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "e926caa7d0768d611cf4cdd5d44b1d33",
+        "id": "7b58df79-3aed-4be3-85fa-0d1eb58501b2",
+        "kwargs": {
+          "body": "{\"prompt\": \"test2\"}",
+          "headers": {},
+          "method": "post",
+          "url": "https://httpbin.org/post"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"test2\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"19\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb6c-78ad0c494d18ce89063acdb2\"\n  }, \n  \"json\": {\n    \"prompt\": \"test2\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "486",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 08:35:56 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 3
+      },
+      {
+        "args": [
+          [
+            {
+              "price": 10
+            },
+            {
+              "price": 25
+            },
+            {
+              "price": 15
+            }
+          ]
+        ],
+        "exception": null,
+        "function": "tool.calculate_price",
+        "hash": "54873c5efdfdad32b09e73740f63a4d9",
+        "id": "df0a6a2c-9a86-4b72-a875-44a8fd14567e",
+        "kwargs": {},
+        "result": {
+          "count": 3,
+          "total": 50
+        },
+        "sequence": 4
+      },
+      {
+        "args": [],
+        "exception": null,
+        "function": "http.request",
+        "hash": "d7bf60d6a6d0adc8a4577786c26bdc6a",
+        "id": "d94a7def-5cdf-4924-abe9-3cfb58c6a912",
+        "kwargs": {
+          "body": "{\"prompt\": \"test3\"}",
+          "headers": {},
+          "method": "post",
+          "url": "https://httpbin.org/post"
+        },
+        "result": {
+          "body": "{\n  \"args\": {}, \n  \"data\": \"{\\\"prompt\\\": \\\"test3\\\"}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"*/*\", \n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Content-Length\": \"19\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"python-requests/2.32.5\", \n    \"X-Amzn-Trace-Id\": \"Root=1-6996cb6c-54e714251f9a229e3344981f\"\n  }, \n  \"json\": {\n    \"prompt\": \"test3\"\n  }, \n  \"origin\": \"47.84.98.201\", \n  \"url\": \"https://httpbin.org/post\"\n}\n",
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive",
+            "Content-Length": "486",
+            "Content-Type": "application/json",
+            "Date": "Thu, 19 Feb 2026 08:35:57 GMT",
+            "Server": "gunicorn/19.9.0"
+          },
+          "status": 200
+        },
+        "sequence": 5
+      }
+    ],
+    "version": "1.0.0"
+  }
+}
