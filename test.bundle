@@ -1,0 +1,150 @@
+{
+  "_schema_version": "1.0.0",
+  "_type": "bundle",
+  "artifacts": [
+    {
+      "_header": {
+        "checksum": "",
+        "created_at": "2026-02-19T09:24:51.067904+00:00",
+        "generator": "replaypack/0.1.0",
+        "schema_version": "1.0.0"
+      },
+      "_metadata": {
+        "compression": null,
+        "recording_count": 1,
+        "step_count": 2,
+        "total_size_bytes": 0
+      },
+      "_schema_version": "1.0.0",
+      "recording": {
+        "metadata": {
+          "duration_ns": 55880975,
+          "step_count": 2
+        },
+        "steps": [
+          {
+            "args": [
+              "machine learning"
+            ],
+            "exception": null,
+            "function": "tool.search_database",
+            "hash": "61f615173ff960ca46f0e405c30f6806",
+            "id": "e5723e2c-544b-4419-a4ef-975d15febd2d",
+            "kwargs": {},
+            "result": {
+              "count": 2,
+              "results": [
+                {
+                  "id": 1,
+                  "title": "Result for machine learning"
+                },
+                {
+                  "id": 2,
+                  "title": "Another result for machine learning"
+                }
+              ]
+            },
+            "sequence": 1
+          },
+          {
+            "args": [
+              {
+                "count": 2,
+                "results": [
+                  {
+                    "id": 1,
+                    "title": "Result for machine learning"
+                  },
+                  {
+                    "id": 2,
+                    "title": "Another result for machine learning"
+                  }
+                ]
+              }
+            ],
+            "exception": null,
+            "function": "tool.format_output",
+            "hash": "11a0fc96db3b4df0e7cb3b805dbbcdf6",
+            "id": "e1154e7d-943b-430c-8ede-9b579c4041d2",
+            "kwargs": {},
+            "result": "- Result for machine learning\n- Another result for machine learning",
+            "sequence": 2
+          }
+        ],
+        "version": "1.0.0"
+      }
+    },
+    {
+      "_header": {
+        "checksum": "",
+        "created_at": "2026-02-19T09:24:51.068044+00:00",
+        "generator": "replaypack/0.1.0",
+        "schema_version": "1.0.0"
+      },
+      "_metadata": {
+        "compression": null,
+        "recording_count": 1,
+        "step_count": 2,
+        "total_size_bytes": 0
+      },
+      "_schema_version": "1.0.0",
+      "recording": {
+        "metadata": {
+          "duration_ns": 58249710,
+          "step_count": 2
+        },
+        "steps": [
+          {
+            "args": [
+              "machine learning"
+            ],
+            "exception": null,
+            "function": "tool.search_database",
+            "hash": "61f615173ff960ca46f0e405c30f6806",
+            "id": "3bc2f080-8666-467f-8c29-575fae66c131",
+            "kwargs": {},
+            "result": {
+              "count": 2,
+              "results": [
+                {
+                  "id": 1,
+                  "title": "Result for machine learning"
+                },
+                {
+                  "id": 2,
+                  "title": "Another result for machine learning"
+                }
+              ]
+            },
+            "sequence": 1
+          },
+          {
+            "args": [
+              {
+                "count": 2,
+                "results": [
+                  {
+                    "id": 1,
+                    "title": "Result for machine learning"
+                  },
+                  {
+                    "id": 2,
+                    "title": "Another result for machine learning"
+                  }
+                ]
+              }
+            ],
+            "exception": null,
+            "function": "tool.format_output",
+            "hash": "11a0fc96db3b4df0e7cb3b805dbbcdf6",
+            "id": "f80d79f0-758b-4aeb-a68b-56666ede661f",
+            "kwargs": {},
+            "result": "- Result for machine learning\n- Another result for machine learning",
+            "sequence": 2
+          }
+        ],
+        "version": "1.0.0"
+      }
+    }
+  ]
+}

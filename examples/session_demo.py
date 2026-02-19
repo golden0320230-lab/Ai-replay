@@ -68,9 +68,13 @@ def main():
 
 
 if __name__ == "__main__":
+    import os
+    # Use CLI-specified output dir if available, otherwise default
+    output_dir = os.environ.get('REPLAYPACK_OUTPUT_DIR', './demo_runs')
+    
     # Record the entire session
-    with replaypack.record(output_dir="./demo_runs"):
+    with replaypack.record(output_dir=output_dir):
         main()
     
-    print("\nRun recorded to ./demo_runs/")
-    print("Replay with: replaypack replay demo_runs/*.rpk")
+    print(f"\nRun recorded to {output_dir}/")
+    print(f"Replay with: replaypack replay {output_dir}/*.rpk")

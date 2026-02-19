@@ -28,7 +28,7 @@ def init(
     capture_llm: bool = True,
     capture_http: bool = True,
     redact_secrets: bool = True
-) -> None:
+) -> Optional[RecordingSession]:
     """Initialize ReplayPack capture.
     
     Args:
@@ -36,8 +36,15 @@ def init(
         capture_llm: Whether to capture LLM calls
         capture_http: Whether to capture HTTP requests
         redact_secrets: Whether to redact secrets in output
+        
+    Returns:
+        RecordingSession if new session started, None if already recording.
     """
     global _interceptor
+    
+    # Check if already recording
+    if Recorder.is_recording():
+        return None  # Already initialized
     
     # Create output directory
     if output_dir:
@@ -100,12 +107,21 @@ def record(output_dir: Optional[str] = None):
             pass
         # .rpk file saved automatically
     """
-    init(output_dir=output_dir)
-    try:
-        yield
-    finally:
-        path = stop()
-        print(f"Replay saved to: {path}")
+    # Check if already recording (e.g., from CLI bootstrap)
+    if Recorder.is_recording():
+        # Already recording, just yield without managing lifecycle
+        try:
+            yield
+        finally:
+            pass  # Don't stop - CLI will handle it
+    else:
+        # Start new recording
+        init(output_dir=output_dir)
+        try:
+            yield
+        finally:
+            path = stop()
+            print(f"Replay saved to: {path}")
 
 
 def tool(name: Optional[str] = None) -> Callable[[F], F]:
