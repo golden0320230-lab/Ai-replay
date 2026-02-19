@@ -54,6 +54,7 @@ class ReplayHarness:
         
         if command:
             print(f"Replaying with stubs: {' '.join(command)}")
+            print("[ReplayPack] Replay mode active - network calls will be stubbed")
             result = subprocess.run(command, env=env)
             return result.returncode
         else:

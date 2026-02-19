@@ -1,0 +1,23 @@
+{
+  "_header": {
+    "checksum": "f4a8954b475fc2e899a17f7528e75e055fc9a3680ebaea7bca01262d109a1155",
+    "created_at": "2026-02-19T17:34:33.320289+00:00",
+    "generator": "replaypack/0.1.0",
+    "schema_version": "1.0.0"
+  },
+  "_metadata": {
+    "compression": null,
+    "recording_count": 1,
+    "step_count": 0,
+    "total_size_bytes": 0
+  },
+  "_schema_version": "1.0.0",
+  "recording": {
+    "metadata": {
+      "duration_ns": 680040,
+      "step_count": 0
+    },
+    "steps": [],
+    "version": "1.0.0"
+  }
+}

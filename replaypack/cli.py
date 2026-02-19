@@ -6,6 +6,7 @@ Commands: record, replay, diff, assert, bundle, ui
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -37,20 +38,26 @@ def create_parser() -> argparse.ArgumentParser:
     
     # replay command
     replay_parser = subparsers.add_parser('replay', help='Replay a recording')
-    replay_parser.add_argument('artifact', help='Input .rpk file')
+    replay_parser.add_argument('artifact', help='Input .rpk file (or use --latest)')
+    replay_parser.add_argument('--latest', action='store_true', help='Use the most recent artifact in the directory')
+    replay_parser.add_argument('--run-recorded-command', action='store_true', 
+                               help='Re-run the original recorded command (if stored)')
     replay_parser.add_argument('--verify', action='store_true', help='Verify determinism')
+    replay_parser.add_argument('replay_args', nargs='*', help='Command to replay with stubs (e.g., -- python script.py)')
     
     # diff command
     diff_parser = subparsers.add_parser('diff', help='Compare two recordings')
     diff_parser.add_argument('artifact_a', help='First .rpk file')
     diff_parser.add_argument('artifact_b', help='Second .rpk file')
     diff_parser.add_argument('--first-divergence', action='store_true', help='Show only first divergence')
+    diff_parser.add_argument('--strict', action='store_true', help='Strict mode (no volatility normalization)')
     diff_parser.add_argument('--json', action='store_true', help='Output as JSON')
     
     # assert command
     assert_parser = subparsers.add_parser('assert', help='Assert recordings match')
     assert_parser.add_argument('artifact_a', help='First .rpk file')
     assert_parser.add_argument('artifact_b', help='Second .rpk file')
+    assert_parser.add_argument('--strict', action='store_true', help='Strict mode (no volatility normalization)')
     
     # bundle command
     bundle_parser = subparsers.add_parser('bundle', help='Bundle recordings with redaction')
@@ -67,6 +74,49 @@ def create_parser() -> argparse.ArgumentParser:
     ui_parser.add_argument('--artifact-b', help='Second artifact to load')
     
     return parser
+
+
+def resolve_artifact_path(artifact_arg: str, latest: bool = False) -> Path:
+    """Resolve artifact path, handling --latest and multiple file errors.
+    
+    Args:
+        artifact_arg: The artifact argument from CLI.
+        latest: Whether to use the latest artifact in a directory.
+        
+    Returns:
+        Resolved Path to artifact.
+        
+    Raises:
+        SystemExit: If multiple artifacts provided or not found.
+    """
+    path = Path(artifact_arg)
+    
+    # Check if it's a directory with --latest
+    if latest or path.is_dir():
+        dir_path = path if path.is_dir() else path.parent
+        if not dir_path.exists():
+            print(f"Error: Directory not found: {dir_path}", file=sys.stderr)
+            sys.exit(1)
+        
+        rpk_files = sorted(dir_path.glob('*.rpk'), key=lambda p: p.stat().st_mtime, reverse=True)
+        if not rpk_files:
+            print(f"Error: No .rpk files found in {dir_path}", file=sys.stderr)
+            sys.exit(1)
+        
+        print(f"Using latest artifact: {rpk_files[0].name}")
+        return rpk_files[0]
+    
+    # Check for glob expansion (multiple files)
+    if ' ' in str(path) or '*' in str(path):
+        print(f"Error: Multiple artifacts detected. Use --latest or specify one file.", file=sys.stderr)
+        print(f"  Example: replaypack replay --latest ./runs", file=sys.stderr)
+        sys.exit(1)
+    
+    if not path.exists():
+        print(f"Error: Artifact not found: {path}", file=sys.stderr)
+        sys.exit(1)
+    
+    return path
 
 
 def cmd_record(args) -> int:
@@ -92,6 +142,15 @@ def cmd_record(args) -> int:
         env = os.environ.copy()
         env['REPLAYPACK_MODE'] = 'record'
         env['REPLAYPACK_OUTPUT_DIR'] = str(output_dir.absolute())
+        
+        # Store command metadata for later replay
+        cmd_metadata = {
+            'argv': cmd_args,
+            'cwd': str(Path.cwd().absolute()),
+            'python_version': sys.version,
+            'platform': sys.platform,
+        }
+        env['REPLAYPACK_CMD_METADATA'] = json.dumps(cmd_metadata)
         
         # Add sitecustomize.py directory to PYTHONPATH for bootstrap
         repo_root = Path(__file__).parent.parent.absolute()
@@ -127,6 +186,12 @@ def cmd_record(args) -> int:
         print(f"\nRecording complete. Artifacts in {output_dir}:")
         for f in rpk_files[-5:]:  # Show last 5
             print(f"  - {f.name}")
+        
+        # Print helpful next steps
+        latest = rpk_files[-1]
+        print(f"\nNext steps:")
+        print(f"  replaypack replay {latest}")
+        print(f"  replaypack replay --latest {output_dir}")
     else:
         print(f"\nWarning: No .rpk files found in {output_dir}")
     
@@ -134,31 +199,64 @@ def cmd_record(args) -> int:
 
 
 def cmd_replay(args) -> int:
-    """Replay command with stub support."""
+    """Replay command with true re-execution support."""
     from .replay_harness import ReplayHarness
     
-    artifact_path = Path(args.artifact)
+    # Resolve artifact path (handles --latest and multiple file errors)
+    artifact_path = resolve_artifact_path(args.artifact, args.latest)
+    
     harness = ReplayHarness(artifact_path)
     
-    print(f"Replaying {args.artifact}...")
-    result = harness.replayer.replay()
+    # Check if we should re-execute a command
+    if args.replay_args:
+        # Mode B: User provided command to replay
+        cmd_args = args.replay_args
+        if cmd_args[0] == '--':
+            cmd_args = cmd_args[1:]
+        
+        if not cmd_args:
+            print("Error: No command specified after --", file=sys.stderr)
+            return 1
+        
+        print(f"Replaying with stubs: {' '.join(cmd_args)}")
+        return harness.run(cmd_args)
     
-    if args.verify:
-        print("Verifying determinism...")
-        if harness.replayer.verify_determinism():
-            print("✓ Determinism verified (100 runs)")
+    elif args.run_recorded_command:
+        # Mode A: Re-run the original recorded command
+        metadata = harness.artifact.recording.metadata
+        if 'command' in metadata:
+            cmd_args = metadata['command']['argv']
+            print(f"Re-running recorded command: {' '.join(cmd_args)}")
+            return harness.run(cmd_args)
         else:
-            print("✗ Determinism check failed")
+            print("Error: No recorded command found in artifact", file=sys.stderr)
+            print("Use: replaypack replay <artifact> -- python script.py", file=sys.stderr)
             return 1
     
-    print(f"Steps executed: {result.steps_executed}")
-    
-    # Show stub availability
-    stubs = list(harness.replayer._stubs.keys())
-    if stubs:
-        print(f"Stubs available: {', '.join(stubs)}")
-    
-    return 0
+    else:
+        # Metadata-only mode (current behavior)
+        print(f"Replaying {artifact_path}...")
+        result = harness.replayer.replay()
+        
+        if args.verify:
+            print("Verifying determinism...")
+            if harness.replayer.verify_determinism():
+                print("✓ Determinism verified (100 runs)")
+            else:
+                print("✗ Determinism check failed")
+                return 1
+        
+        print(f"Steps executed: {result.steps_executed}")
+        
+        # Show stub availability
+        stubs = list(harness.replayer._stubs.keys())
+        if stubs:
+            print(f"Stubs available: {', '.join(stubs)}")
+        
+        print(f"\nTo re-execute with stubs:")
+        print(f"  replaypack replay {artifact_path} -- python3 your_script.py")
+        
+        return 0
 
 
 def cmd_diff(args) -> int:
@@ -167,6 +265,10 @@ def cmd_diff(args) -> int:
     
     artifact_a = Artifact.load(args.artifact_a)
     artifact_b = Artifact.load(args.artifact_b)
+    
+    # Set strict mode if requested
+    if args.strict:
+        os.environ['REPLAYPACK_STRICT'] = '1'
     
     detector = DivergenceDetector()
     
@@ -228,6 +330,10 @@ def cmd_assert(args) -> int:
     """Assert command - fails if recordings differ."""
     artifact_a = Artifact.load(args.artifact_a)
     artifact_b = Artifact.load(args.artifact_b)
+    
+    # Set strict mode if requested
+    if args.strict:
+        os.environ['REPLAYPACK_STRICT'] = '1'
     
     detector = DivergenceDetector()
     divergence = detector.detect(artifact_a.recording, artifact_b.recording)

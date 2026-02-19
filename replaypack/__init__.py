@@ -23,6 +23,15 @@ _current_recorder: Optional[Recorder] = None
 _interceptor = None
 
 
+def is_replay_mode() -> bool:
+    """Check if running in replay mode.
+    
+    Returns:
+        True if replay mode is active.
+    """
+    return os.environ.get('REPLAYPACK_MODE') == 'replay'
+
+
 def init(
     output_dir: Optional[str] = None,
     capture_llm: bool = True,
@@ -137,13 +146,22 @@ def tool(name: Optional[str] = None) -> Callable[[F], F]:
     """
     def decorator(func: F) -> F:
         tool_name = name or func.__name__
+        full_name = f"tool.{tool_name}"
         
         def wrapper(*args, **kwargs):
+            # Check for replay mode first
+            if is_replay_mode():
+                from .replay_stub import get_stub_response
+                stub_result = get_stub_response(full_name)
+                if stub_result is not None:
+                    return stub_result
+                # If no stub found, fall through to live execution
+            
             if Recorder.is_recording():
                 try:
                     result = func(*args, **kwargs)
                     Recorder.record(
-                        function=f"tool.{tool_name}",
+                        function=full_name,
                         args=args,
                         kwargs=kwargs,
                         result=result
@@ -151,7 +169,7 @@ def tool(name: Optional[str] = None) -> Callable[[F], F]:
                     return result
                 except Exception as e:
                     Recorder.record(
-                        function=f"tool.{tool_name}",
+                        function=full_name,
                         args=args,
                         kwargs=kwargs,
                         exception=e
